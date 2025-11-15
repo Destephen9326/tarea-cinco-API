@@ -1,0 +1,45 @@
+
+ion-content {
+  --background: #f7f7f7;
+}
+
+.large-icon-otp {
+  font-size: 5rem;
+  margin-bottom: 10px;
+}
+
+
+ion-item.error-border {
+  // Borde rojo de 2px sólido como se solicitó
+  border: 2px solid red;
+  border-radius: 8px; 
+  --border-color: red !important;
+  --highlight-color-invalid: red;
+  --highlight-color-focused: red;
+}
+
+// Estilo para los mensajes de error
+.error-message {
+  color: red;
+  font-size: 0.85em;
+  padding-left: 16px; 
+  margin-top: -10px; // Ajuste para acercar el mensaje al campo
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+// Estilos de UI
+ion-item-round {
+    --border-radius: 8px;
+    --border-color: #ddd;
+    --border-width: 1px;
+    --padding-start: 10px;
+    margin-bottom: 10px;
+}
+
+.verify-button {
+    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+    height: 48px;
+    font-weight: bold;
+}

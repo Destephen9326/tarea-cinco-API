@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+        <ion-back-button defaultHref="/registro"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Verificación OTP</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+
+  <div class="ion-padding-top">
+    <ion-icon name="phone-portrait-outline" class="large-icon-otp" color="primary"></ion-icon>
+    <h2 class="ion-no-margin">Confirma tu Número</h2>
+    <p class="ion-padding-top ion-text-wrap" *ngIf="numeroTelefono">
+      Hemos enviado un código de {{MIN_LENGTH_TOKEN}} dígitos al número <strong>{{numeroTelefono}}</strong>. Por favor, ingrésalo a continuación.
+    </p>
+    <p class="ion-padding-top ion-text-wrap" *ngIf="!numeroTelefono">
+      Hemos enviado un código de {{MIN_LENGTH_TOKEN}} dígitos a tu teléfono. Por favor, ingrésalo a continuación.
+    </p>
+  </div>
+
+  <!-- Formulario Angular Reactivo -->
+  <form [formGroup]="formularioOtp" (ngSubmit)="verificarToken()">
+    
+    <!-- Campo OTP / Token -->
+    <ion-list class="ion-margin-top ion-no-lines">
+      <!-- ngClass para borde rojo basado en el Getter -->
+      <ion-item [ngClass]="{'error-border': tokenInvalido}" class="ion-item-round">
+        <ion-icon name="key-outline" slot="start" color="medium"></ion-icon>
+        <ion-input
+          label="Código OTP"
+          labelPlacement="floating"
+          type="text"
+          inputmode="numeric"
+          formControlName="tokenVerificacion"
+          placeholder="Código de 6 dígitos"
+          maxlength="6"
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+   
+    <div class="error-message" *ngIf="tokenInvalido">
+      {{ tokenErrores }}
+    </div>
+
+  
+    <ion-button
+      expand="block"
+      type="submit"
+      [disabled]="formularioOtp.invalid || isLoading"
+      class="ion-margin-top verify-button"
+    >
+      <span *ngIf="!isLoading">Verificar</span>
+      <span *ngIf="isLoading">Verificando...</span>
+    </ion-button>
+
+  </form>
+
+  <ion-button 
+    fill="clear" 
+    color="medium" 
+    class="ion-margin-top"
+    [disabled]="isLoading"
+    (click)="reenviarCodigo()"
+  >
+    <span *ngIf="!isLoading">Reenviar código</span>
+    <span *ngIf="isLoading">Reenviando...</span>
+  </ion-button>
+  
+</ion-content>

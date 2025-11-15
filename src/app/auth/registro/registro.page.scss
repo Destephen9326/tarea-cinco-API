@@ -1,0 +1,49 @@
+// Estilo general para la página
+ion-content {
+  --background: #f7f7f7;
+}
+
+.header-section {
+  padding: 20px 0;
+}
+
+.large-icon {
+  font-size: 6rem;
+}
+
+// Clase que se aplica con ngClass para resaltar errores
+ion-item.error-border {
+  // Borde rojo de 2px sólido como se solicitó
+  border: 2px solid red;
+  border-radius: 8px; 
+  // Esto asegura que el borde rojo anule el estilo interno de Ionic para el input
+  --border-color: red !important;
+  --highlight-color-invalid: red;
+  --highlight-color-focused: red;
+}
+
+// Estilo para los mensajes de error
+.error-message {
+  color: red;
+  font-size: 0.85em;
+  padding-left: 16px; 
+  margin-top: -10px; 
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+// Estilos de UI
+ion-item-round {
+    --border-radius: 8px;
+    --border-color: #ddd;
+    --border-width: 1px;
+    --padding-start: 10px;
+    margin-bottom: 10px;
+}
+
+.register-button {
+    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+    height: 48px;
+    font-weight: bold;
+}

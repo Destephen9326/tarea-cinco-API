@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Crear Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="header-section ion-text-center ion-margin-bottom">
+    <ion-icon name="person-circle-outline" class="large-icon" color="primary"></ion-icon>
+    <p>Completa tus datos para registrarte.</p>
+  </div>
+
+  <!-- Formulario Angular Reactivo -->
+  <form [formGroup]="formularioRegistro" (ngSubmit)="registrarUsuario()">
+
+    <ion-item [ngClass]="{'error-border': nombresInvalido}" class="ion-margin-bottom ion-item-round">
+      <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
+      <ion-input label="Nombres" labelPlacement="floating" type="text" formControlName="nombres" placeholder="Ej: Juan Pérez"></ion-input>
+    </ion-item>
+    <div class="error-message" *ngIf="nombresInvalido">El nombre es obligatorio.</div>
+
+    <!-- 2. Campo Correo Electrónico -->
+    <ion-item [ngClass]="{'error-border': correoElectronicoInvalido}" class="ion-margin-bottom ion-item-round">
+      <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
+      <ion-input label="Correo Electrónico" labelPlacement="floating" type="email" formControlName="correoElectronico" placeholder="ejemplo@dominio.com"></ion-input>
+    </ion-item>
+    <div class="error-message" *ngIf="correoElectronicoInvalido">
+      <span *ngIf="formularioRegistro.get('correoElectronico')?.errors?.['required']">El correo es obligatorio.</span>
+      <span *ngIf="formularioRegistro.get('correoElectronico')?.errors?.['email']">El formato del correo es incorrecto.</span>
+    </div>
+
+    <!-- 3. Campo Contraseña -->
+    <ion-item [ngClass]="{'error-border': contrasenaInvalida}" class="ion-margin-bottom ion-item-round">
+      <ion-icon name="lock-closed-outline" slot="start" color="medium"></ion-icon>
+      <ion-input label="Contraseña" labelPlacement="floating" type="password" formControlName="contrasena" placeholder="Mín. 6, A-z, 0-9, Caracter especial"></ion-input>
+    </ion-item>
+    <!-- Muestra el error de complejidad usando el Getter -->
+    <div class="error-message" *ngIf="contrasenaInvalida">
+      {{ contrasenaErrores }}
+    </div>
+
+    <!-- 4. Campo Número de Teléfono -->
+    <ion-item [ngClass]="{'error-border': numeroTelefonoInvalido}" class="ion-margin-bottom ion-item-round">
+      <ion-icon name="call-outline" slot="start" color="medium"></ion-icon>
+      <!-- inputmode="numeric" es clave para teclados móviles -->
+      <ion-input label="Teléfono" labelPlacement="floating" type="tel" inputmode="numeric" formControlName="numeroTelefono" placeholder="Mín. 8 dígitos" maxlength="15"></ion-input>
+    </ion-item>
+    <!-- Muestra el error de número usando el Getter -->
+    <div class="error-message" *ngIf="numeroTelefonoInvalido">
+      {{ numeroTelefonoErrores }}
+    </div>
+
+    <!-- Botón Registrar -->
+
+    <ion-button
+      expand="block"
+      type="submit"
+      [disabled]="formularioRegistro.invalid || isLoading"
+      class="ion-margin-top register-button"
+    >
+      <span *ngIf="!isLoading">Registrar</span>
+      <span *ngIf="isLoading">Registrando...</span>
+    </ion-button>
+    
+  </form>
+</ion-content>
