@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { numericMinLengthValidator } from '../../shared/validators/custom.validators';
 import { AuthService } from '../../shared/services/auth.service';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonButtons, IonBackButton, IonIcon, IonList, IonItem, ToastController, LoadingController } from "@ionic/angular/standalone";
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonButtons, IonBackButton, IonIcon, IonItem, IonSpinner, ToastController, LoadingController } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-verificacion-otp',
@@ -24,8 +24,8 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonBu
     IonButtons,
     IonBackButton,
     IonIcon,
-    IonList,
-    IonItem
+    IonItem,
+    IonSpinner
   ]
 })
 export class VerificacionOtpPage implements OnInit {

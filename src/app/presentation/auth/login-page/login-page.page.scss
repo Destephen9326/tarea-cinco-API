@@ -1,0 +1,75 @@
+/* Para el foondo de gris claro */
+ion-content {
+  --background: #f4f5f8;
+}
+
+.header-logo {
+  margin-top: 40px;
+  margin-bottom: 30px;
+
+  .shield-icon {
+    font-size: 8rem; 
+    color: #6236FF; /* Morado */
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  h1 {
+    font-weight: bold;
+    color: #000;
+    font-size: 1.5rem;
+  }
+}
+
+.input-group {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+  }
+}
+
+.custom-input {
+  --background: #190d0d;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  --padding-start: 10px;
+  
+  /* Borde Rojo si hay error */
+  &.error-border {
+    border: 2px solid red !important;
+    --border-color: red !important;
+  }
+}
+
+.error-msg {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  display: block;
+  font-weight: 500;
+}
+
+.forgot-pass {
+  margin-bottom: 30px;
+  a {
+    color: #6236FF;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+}
+
+.btn-primary {
+  --background: #6236FF;
+  --border-radius: 8px;
+  font-weight: bold;
+  height: 50px;
+  margin-top: 20px;
+}
