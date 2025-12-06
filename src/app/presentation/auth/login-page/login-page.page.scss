@@ -73,3 +73,21 @@ ion-content {
   height: 50px;
   margin-top: 20px;
 }
+
+.register-section {
+  margin-top: 30px;
+  
+  p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+}
+
+.btn-register {
+  --border-color: #6236FF;
+  --color: #6236FF;
+  --border-radius: 8px;
+  font-weight: bold;
+  height: 50px;
+}

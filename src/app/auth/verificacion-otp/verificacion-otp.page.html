@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true" class="otp-content">
   
-  <!-- Background decorative elements -->
+ 
   <div class="background-decoration">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
@@ -18,7 +18,7 @@
 
   <div class="otp-container">
     
-    <!-- Header Section -->
+
     <div class="header-section">
       <div class="icon-wrapper">
         <div class="icon-glow"></div>
@@ -43,10 +43,10 @@
       </p>
     </div>
 
-    <!-- Form Section -->
+  
     <form [formGroup]="formularioOtp" (ngSubmit)="verificarToken()" class="form-section">
       
-      <!-- OTP Input Container -->
+     
       <div class="input-wrapper">
         <div class="otp-label">
           <ion-icon name="lock-closed-outline"></ion-icon>
@@ -82,7 +82,7 @@
         </div>
       </div>
 
-      <!-- Verify Button -->
+   
       <ion-button
         expand="block"
         type="submit"
@@ -101,7 +101,6 @@
 
     </form>
 
-    <!-- Resend Section -->
     <div class="resend-section">
       <div class="divider">
         <span class="divider-line"></span>

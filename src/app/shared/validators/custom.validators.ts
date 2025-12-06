@@ -35,8 +35,7 @@ export function passwordValidator(): ValidatorFn {
 }
 
 /**
- 
- * @param minLength - Longitud mínima requerida.
+ * @param minLength - Longitud mínima requerida (solo cuenta los dígitos).
  */
 export function numericMinLengthValidator(minLength: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -47,20 +46,21 @@ export function numericMinLengthValidator(minLength: number): ValidatorFn {
       return null;
     }
 
+  
+    const cleanedValue = value.toString().replace(/\s+/g, '');
     
-    const isNumeric = /^\d+$/.test(value);
+   
+    const isValidFormat = /^(\+\d+|\d+)$/.test(cleanedValue);
     
-    
-    const hasMinLength = value.length >= minLength;
-
-    if (!isNumeric) {
-      
+    if (!isValidFormat) {
       return { 'notNumeric': true };
     }
 
-    if (!hasMinLength) {
-      
-      return { 'minLengthNumeric': { requiredLength: minLength, actualLength: value.length } };
+ 
+    const digitCount = cleanedValue.replace(/[^\d]/g, '').length;
+    
+    if (digitCount < minLength) {
+      return { 'minLengthNumeric': { requiredLength: minLength, actualLength: digitCount } };
     }
 
     return null;

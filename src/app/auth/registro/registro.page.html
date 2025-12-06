@@ -43,8 +43,19 @@
     <ion-item [ngClass]="{'error-border': numeroTelefonoInvalido}" class="ion-margin-bottom ion-item-round">
       <ion-icon name="call-outline" slot="start" color="medium"></ion-icon>
       <!-- inputmode="numeric" es clave para teclados móviles -->
-      <ion-input label="Teléfono" labelPlacement="floating" type="tel" inputmode="numeric" formControlName="numeroTelefono" placeholder="Mín. 8 dígitos" maxlength="15"></ion-input>
+      <ion-input 
+        label="Teléfono" 
+        labelPlacement="floating" 
+        type="tel" 
+        inputmode="tel" 
+        formControlName="numeroTelefono" 
+        placeholder="Ej: +50432794682 o 32794682" 
+        maxlength="20">
+      </ion-input>
     </ion-item>
+    <div class="ion-text-start ion-margin-bottom" style="font-size: 0.85rem; color: var(--ion-color-medium); padding-left: 16px;">
+      <p>Ingresa tu número con código de país (ej: +504) o solo el número local. Se agregará +504 automáticamente.</p>
+    </div>
     <!-- Muestra el error de número usando el Getter -->
     <div class="error-message" *ngIf="numeroTelefonoInvalido">
       {{ numeroTelefonoErrores }}
@@ -62,5 +73,9 @@
       <span *ngIf="isLoading">Registrando...</span>
     </ion-button>
     
+    <div class="ion-text-center ion-margin-top">
+  <p>¿Ya tienes cuenta? <a (click)="irALogin()" style="color: var(--ion-color-primary); font-weight: bold; cursor: pointer;">Inicia Sesión</a></p>
+</div>
+
   </form>
 </ion-content>

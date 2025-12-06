@@ -11,18 +11,17 @@ ion-content {
   font-size: 6rem;
 }
 
-// Clase que se aplica con ngClass para resaltar errores
+
 ion-item.error-border {
-  // Borde rojo de 2px sólido como se solicitó
+
   border: 2px solid red;
   border-radius: 8px; 
-  // Esto asegura que el borde rojo anule el estilo interno de Ionic para el input
+
   --border-color: red !important;
   --highlight-color-invalid: red;
   --highlight-color-focused: red;
 }
 
-// Estilo para los mensajes de error
 .error-message {
   color: red;
   font-size: 0.85em;
@@ -32,7 +31,6 @@ ion-item.error-border {
   text-align: left;
 }
 
-// Estilos de UI
 ion-item-round {
     --border-radius: 8px;
     --border-color: #ddd;

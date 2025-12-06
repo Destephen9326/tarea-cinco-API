@@ -46,9 +46,21 @@
       expand="block" 
       type="submit" 
       class="btn-primary" 
-      [disabled]="formularioLogin.invalid">
-      Ingresar
+      [disabled]="formularioLogin.invalid || isLoading">
+      <span *ngIf="!isLoading">Ingresar</span>
+      <span *ngIf="isLoading">Iniciando sesión...</span>
     </ion-button>
 
   </form>
+
+  <div class="register-section ion-text-center ion-margin-top">
+    <p>¿No tienes una cuenta?</p>
+    <ion-button 
+      expand="block" 
+      fill="outline" 
+      class="btn-register"
+      (click)="irARegistro()">
+      Regístrate
+    </ion-button>
+  </div>
 </ion-content>

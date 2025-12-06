@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { IonicModule, NavController, ModalController } from '@ionic/angular'; // <--- 1. Agregado ModalController
-import { Login } from '../../../../app/core/interfaces/login.interface';
+import { IonicModule, NavController, ModalController, ToastController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
+import { AuthService } from '../../../shared/services/auth.service';
 import { RecuperarPasswordComponent } from '../recuperar-password/recuperar-password.component';
 
 @Component({
@@ -16,11 +17,16 @@ import { RecuperarPasswordComponent } from '../recuperar-password/recuperar-pass
 export class LoginPagePage implements OnInit {
   
   public formularioLogin!: FormGroup;
+  public isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private navCtrl: NavController,
-    private modalCtrl: ModalController // <--- 3. Inyectamos el controlador
+    private router: Router,
+    private modalCtrl: ModalController,
+    private authService: AuthService,
+    private toastController: ToastController,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -51,13 +57,67 @@ export class LoginPagePage implements OnInit {
   // --- ACCIONES ---
 
   async ingresar() {
-    if (this.formularioLogin.valid) {
-      const datos: Login = this.formularioLogin.value;
-      console.log('Login válido:', datos);
-      this.navCtrl.navigateRoot('/home'); 
-    } else {
+    if (this.formularioLogin.invalid) {
       this.formularioLogin.markAllAsTouched();
+      await this.mostrarToast('Por favor, completa todos los campos correctamente.', 'warning');
+      return;
     }
+
+    this.isLoading = true;
+    const loading = await this.loadingController.create({
+      message: 'Iniciando sesión...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    try {
+      const email = this.formularioLogin.value.correoElectronico;
+      const password = this.formularioLogin.value.contrasena;
+
+      const exito = await this.authService.login(email, password);
+
+      await loading.dismiss();
+      this.isLoading = false;
+
+      if (exito) {
+        await this.mostrarToast('¡Sesión iniciada correctamente!', 'success');
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 1000);
+      } else {
+        await this.mostrarToast('Credenciales incorrectas. Por favor, verifica tus datos.', 'danger');
+      }
+    } catch (error: any) {
+      await loading.dismiss();
+      this.isLoading = false;
+      console.error('Error en login:', error);
+      
+      let mensajeError = 'Error al iniciar sesión. Por favor, intenta nuevamente.';
+      
+      if (error?.error?.message) {
+        mensajeError = error.error.message;
+      } else if (error?.message) {
+        mensajeError = error.message;
+      } else if (error?.status === 0) {
+        mensajeError = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
+      } else if (error?.status === 401) {
+        mensajeError = 'Credenciales incorrectas. Verifica tu correo y contraseña.';
+      } else if (error?.status >= 500) {
+        mensajeError = 'Error del servidor. Por favor, intenta más tarde.';
+      }
+      
+      await this.mostrarToast(mensajeError, 'danger');
+    }
+  }
+
+  private async mostrarToast(mensaje: string, color: 'success' | 'danger' | 'warning' = 'success'): Promise<void> {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 3000,
+      color: color,
+      position: 'top'
+    });
+    await toast.present();
   }
 
   async abrirModalRecuperar() {
@@ -65,5 +125,9 @@ export class LoginPagePage implements OnInit {
       component: RecuperarPasswordComponent
     });
     await modal.present();
+  }
+
+  irARegistro() {
+    this.navCtrl.navigateForward('/registro');
   }
 }

@@ -54,19 +54,15 @@ export class VerificacionOtpPage implements OnInit {
   }
 
   ngOnInit() {
-    const usuario = this.authService.getUsuarioRegistro();
-    if (usuario) {
-      this.numeroTelefono = usuario.numeroTelefono;
+    const datosRegistro = this.authService.getDatosRegistro();
+    if (datosRegistro) {
+      this.numeroTelefono = datosRegistro.phoneNumber;
       
-      const otp = this.authService.getOTPGenerado();
-      if (otp) {
-        console.log('========================================');
-        console.log('📱 VERIFICACIÓN OTP');
-        console.log('========================================');
-        console.log(`Teléfono: ${this.numeroTelefono}`);
-        console.log(`Código OTP esperado: ${otp}`);
-        console.log('========================================');
-      }
+      console.log('========================================');
+      console.log('📱 VERIFICACIÓN OTP');
+      console.log('========================================');
+      console.log(`Teléfono: ${this.numeroTelefono}`);
+      console.log('========================================');
     } else {
    
       console.warn('No hay usuario registrado. Redirigiendo al registro...');
@@ -117,32 +113,75 @@ export class VerificacionOtpPage implements OnInit {
     await loading.present();
 
     try {
-      const codigoIngresado = this.formularioOtp.value.tokenVerificacion;
+      // Limpiar el código ingresado (eliminar espacios y caracteres no numéricos)
+      const codigoIngresado = this.formularioOtp.value.tokenVerificacion?.toString().trim().replace(/\s+/g, '') || '';
       
+      if (!codigoIngresado || codigoIngresado.length !== this.MIN_LENGTH_TOKEN) {
+        await loading.dismiss();
+        this.isLoading = false;
+        await this.mostrarToast('Por favor, ingresa un código válido de 6 dígitos.', 'warning');
+        return;
+      }
+      
+      console.log('========================================');
+      console.log('🔐 VERIFICANDO CÓDIGO OTP');
+      console.log('========================================');
+      console.log(`Teléfono usado: ${this.numeroTelefono}`);
+      console.log(`Código ingresado (original): ${this.formularioOtp.value.tokenVerificacion}`);
+      console.log(`Código ingresado (limpio): ${codigoIngresado}`);
+      console.log('========================================');
   
-      const esValido = this.authService.verificarOTP(codigoIngresado);
+      const esValido = await this.authService.verificarTokenTelefono(this.numeroTelefono, codigoIngresado);
       
-      await loading.dismiss();
-      this.isLoading = false;
+      console.log(`Resultado de verificación: ${esValido ? 'VÁLIDO' : 'INVÁLIDO'}`);
+      
 
       if (esValido) {
-    
-        await this.mostrarToast('¡Código verificado correctamente!', 'success');
+        // Actualizar mensaje de loading
+        loading.message = 'Creando cuenta...';
         
-        setTimeout(() => {
-          this.router.navigate(['/home']);
-        }, 1500);
+        // Crear la cuenta real después de verificar el código
+        const cuentaCreada = await this.authService.crearCuentaReal();
+        
+        await loading.dismiss();
+        this.isLoading = false;
+
+        if (cuentaCreada) {
+          await this.mostrarToast('¡Cuenta creada exitosamente!', 'success');
+          
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 1500);
+        } else {
+          await this.mostrarToast('Error al crear la cuenta. Por favor, intenta nuevamente.', 'danger');
+        }
       } else {
-   
+        await loading.dismiss();
+        this.isLoading = false;
         await this.mostrarToast('Código incorrecto. Por favor, verifica e intenta nuevamente.', 'danger');
-   
         this.formularioOtp.patchValue({ tokenVerificacion: '' });
       }
-    } catch (error) {
+    } catch (error: any) {
       await loading.dismiss();
       this.isLoading = false;
       console.error('Error al verificar OTP:', error);
-      await this.mostrarToast('Error al verificar el código. Por favor, intenta nuevamente.', 'danger');
+      console.error('Detalles completos del error:', {
+        status: error?.status,
+        statusText: error?.statusText,
+        message: error?.message,
+        error: error?.error,
+        body: error?.error
+      });
+      
+      let mensajeError = 'Error al verificar el código. Por favor, intenta nuevamente.';
+      
+      if (error?.error?.message) {
+        mensajeError = error.error.message;
+      } else if (error?.message) {
+        mensajeError = error.message;
+      }
+      
+      await this.mostrarToast(mensajeError, 'danger');
     }
   }
 
@@ -155,11 +194,11 @@ export class VerificacionOtpPage implements OnInit {
     await loading.present();
 
     try {
-      const nuevoOTP = await this.authService.reenviarOTP();
+      await this.authService.enviarTokenTelefono(this.numeroTelefono);
       await loading.dismiss();
       this.isLoading = false;
       
-      await this.mostrarToast('Código reenviado. Revisa la consola para ver el nuevo código.', 'success');
+      await this.mostrarToast('Código reenviado correctamente.', 'success');
     } catch (error) {
       await loading.dismiss();
       this.isLoading = false;

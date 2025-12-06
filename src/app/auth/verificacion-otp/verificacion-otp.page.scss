@@ -1,4 +1,4 @@
-// Variables de colores modernos mejorados
+
 :root {
   --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --primary-gradient-hover: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
@@ -25,7 +25,7 @@
   --border-radius-xl: 32px;
 }
 
-// Header moderno
+
 .modern-header {
   ion-toolbar {
     --background: transparent;
@@ -45,7 +45,7 @@
   }
 }
 
-// Background decoration
+
 .background-decoration {
   position: fixed;
   top: 0;
@@ -103,7 +103,7 @@
   }
 }
 
-// Contenedor principal
+
 .otp-content {
   --background: var(--bg-light);
   --padding-start: 0;
@@ -137,7 +137,7 @@
   }
 }
 
-// Header Section mejorado
+
 .header-section {
   text-align: center;
   margin-bottom: 3rem;
@@ -263,7 +263,7 @@
   }
 }
 
-// Info Card moderna
+
 .info-card {
   display: flex;
   align-items: center;
@@ -335,7 +335,7 @@
   letter-spacing: 0.5px;
 }
 
-// Form Section mejorada
+
 .form-section {
   margin-bottom: 2.5rem;
   animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
@@ -519,7 +519,7 @@
   }
 }
 
-// Verify Button mejorado
+
 .verify-button {
   --background: var(--primary-gradient);
   --background-hover: var(--primary-gradient-hover);
@@ -598,7 +598,6 @@
   height: 16px;
 }
 
-// Resend Section mejorada
 .resend-section {
   text-align: center;
   margin-top: 2.5rem;
@@ -667,7 +666,6 @@
   }
 }
 
-// Responsive adjustments mejorados
 @media (max-width: 576px) {
   .otp-container {
     padding: 2rem 1.25rem;
@@ -745,7 +743,7 @@
   }
 }
 
-// Dark mode support mejorado
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-light: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
