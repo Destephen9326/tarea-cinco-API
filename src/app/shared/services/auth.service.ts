@@ -41,15 +41,14 @@ export class AuthService {
       
       console.log('Respuesta del login:', response);
       
-     
-      const token = response.token || response.data?.token;
+      // La API devuelve accessToken, no token
+      const token = response.accessToken || response.token || response.data?.accessToken || response.data?.token;
       const userId = response.userId || response.data?.userId;
 
       console.log('Token encontrado:', token ? 'Sí' : 'No');
       console.log('UserId encontrado:', userId || 'No');
 
       if (token) {
-       
         await this.guardarSesion(token, userId);
         console.log('Sesión guardada correctamente');
         return true;
@@ -192,7 +191,11 @@ export class AuthService {
       console.log('📝 CREANDO CUENTA REAL');
       console.log('========================================');
       console.log('URL:', `${this.apiUrl}/accounts`);
-      console.log('Datos a enviar:', this.datosRegistroTemporal);
+      console.log('Datos a enviar:', {
+        ...this.datosRegistroTemporal,
+        password: '***' // No mostrar la contraseña en logs
+      });
+      console.log('Email que se registrará:', this.datosRegistroTemporal.email);
       console.log('========================================');
       
      

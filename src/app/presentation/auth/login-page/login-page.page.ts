@@ -71,8 +71,14 @@ export class LoginPagePage implements OnInit {
     await loading.present();
 
     try {
-      const email = this.formularioLogin.value.correoElectronico;
-      const password = this.formularioLogin.value.contrasena;
+      // Normalizar email: eliminar espacios y convertir a minúsculas
+      const email = this.formularioLogin.value.correoElectronico.trim().toLowerCase();
+      // Normalizar contraseña: eliminar espacios al inicio y final
+      const password = this.formularioLogin.value.contrasena.trim();
+
+      console.log('🔐 Intentando login con:');
+      console.log('  Email:', email);
+      console.log('  Contraseña (longitud):', password.length);
 
       const exito = await this.authService.login(email, password);
 

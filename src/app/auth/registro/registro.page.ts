@@ -78,16 +78,29 @@ export class RegistroPage implements OnInit {
       console.log('Número formateado:', numeroTelefonoFormateado);
 
  
+      // Normalizar email: eliminar espacios y convertir a minúsculas
+      const emailNormalizado = this.formularioRegistro.value.correoElectronico.trim().toLowerCase();
+      
+      // Normalizar contraseña: eliminar espacios al inicio y final (pero mantener espacios internos si los hay)
+      const passwordNormalizado = this.formularioRegistro.value.contrasena.trim();
+
+      console.log('📧 Email normalizado:', emailNormalizado);
+      console.log('🔑 Contraseña normalizada (longitud):', passwordNormalizado.length);
+
       const datosUsuario = {
         names: names,
         surnames: surnames,
-        email: this.formularioRegistro.value.correoElectronico,
-        password: this.formularioRegistro.value.contrasena,
+        email: emailNormalizado,
+        password: passwordNormalizado,
         phoneNumber: numeroTelefonoFormateado,
         address: null,
         fcmToken: null
       };
 
+      console.log('💾 Datos de usuario preparados para registro:', {
+        ...datosUsuario,
+        password: '***' // No mostrar la contraseña en logs
+      });
      
       this.authService.setDatosRegistro(datosUsuario);
       
